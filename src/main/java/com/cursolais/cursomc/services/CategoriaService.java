@@ -12,6 +12,7 @@ import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import com.cursolais.cursomc.domain.Categoria;
+import com.cursolais.cursomc.domain.Cliente;
 import com.cursolais.cursomc.dto.CategoriaDTO;
 import com.cursolais.cursomc.repositories.CategoriaRepository;
 import com.cursolais.cursomc.services.exceptions.DataIntegrityException;

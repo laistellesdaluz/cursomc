@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.cursolais.cursomc.domain.Cliente;
+import com.cursolais.cursomc.domain.Cliente;
+import com.cursolais.cursomc.dto.ClienteDTO;
 import com.cursolais.cursomc.dto.ClienteDTO;
 import com.cursolais.cursomc.repositories.ClienteRepository;
 import com.cursolais.cursomc.services.exceptions.DataIntegrityException;
@@ -31,10 +33,15 @@ public class ClienteService {
 		//return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id:"+ id + " Tipo:"+ Cliente.class.getName()));
 	}
 	
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
+	
 	public Cliente update(Cliente obj) {
 		Cliente newObj = find(obj.getId());
 		updateData(newObj, obj);
-		return repo.save(obj);
+		return repo.save(newObj);
 	}
 	public void delete(Integer id) {
 		find(id);
@@ -42,7 +49,7 @@ public class ClienteService {
 			repo.deleteById(id);
 		}
 		catch(DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir porque há entidades relacionadas.");
+			throw new DataIntegrityException("Não é possível excluir um cliente que possua pedidos.");
 		}
 		
 	}
@@ -59,8 +66,8 @@ public class ClienteService {
 	
 	public Cliente fromDTO(ClienteDTO objDto) {
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
-	}	
-
+	}
+	
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
